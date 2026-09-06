@@ -1,0 +1,1087 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>PartyPass — Standalone Prototype (Ghana Event Ticketing)</title>
+    <meta
+      name="description"
+      content="Self-contained clickable prototype of PartyPass, a mobile-first Ghanaian event ticketing PWA. Deep purple and electric blue with green confirmation states."
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap"
+    />
+    <style>
+      :root {
+        --bg: #150b26;
+        --surface: #1f1236;
+        --surface-2: #2b1a49;
+        --text: #f6f1ff;
+        --muted: #b3a3cc;
+        --border: rgba(255, 255, 255, 0.12);
+        --primary: #7c3aed;
+        --primary-2: #9b6bff;
+        --accent: #2f7bff;
+        --success: #22c98a;
+        --warning: #f0b429;
+        --danger: #ff5c5c;
+        --radius: 20px;
+      }
+      html.light {
+        --bg: #f8f6fd;
+        --surface: #ffffff;
+        --surface-2: #f0ecfa;
+        --text: #1a0f2e;
+        --muted: #6b5e85;
+        --border: rgba(26, 15, 46, 0.1);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "DM Sans", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      h1,
+      h2,
+      h3,
+      .display {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        letter-spacing: -0.02em;
+        margin: 0;
+      }
+      a {
+        color: inherit;
+      }
+      button {
+        font: inherit;
+        cursor: pointer;
+      }
+      :focus-visible {
+        outline: 2px solid var(--primary-2);
+        outline-offset: 2px;
+      }
+      .banner {
+        background: linear-gradient(100deg, #2f7bff22, #7c3aed22);
+        border-bottom: 1px solid var(--border);
+        padding: 12px 16px;
+        font-size: 12.5px;
+        line-height: 1.5;
+        color: var(--muted);
+        text-align: center;
+      }
+      .banner strong {
+        color: var(--text);
+      }
+      .phone {
+        max-width: 460px;
+        margin: 0 auto;
+        min-height: 100vh;
+        padding: 16px 16px 104px;
+        position: relative;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .between {
+        justify-content: space-between;
+      }
+      .eyebrow {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--primary-2);
+        margin: 0;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .small {
+        font-size: 12.5px;
+      }
+      .icon-btn {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text);
+      }
+      .hero {
+        background: linear-gradient(145deg, #5b21b6, #4c1d95 45%, #1d4ed8);
+        border-radius: 28px;
+        padding: 18px;
+        box-shadow: 0 18px 50px -18px rgba(124, 58, 237, 0.7);
+        color: #fff;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        overflow: hidden;
+      }
+      .card + .card {
+        margin-top: 14px;
+      }
+      .cover {
+        position: relative;
+        aspect-ratio: 16/10;
+        background: linear-gradient(145deg, #5b21b6, #1d4ed8);
+      }
+      .cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .scrim {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.05) 60%);
+      }
+      .pill {
+        display: inline-block;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .pill-primary {
+        background: var(--primary);
+        color: #fff;
+      }
+      .pill-success {
+        background: rgba(34, 201, 138, 0.16);
+        color: var(--success);
+      }
+      .pill-warn {
+        background: var(--warning);
+        color: #2b1f00;
+      }
+      .pill-danger {
+        background: var(--danger);
+        color: #2b0000;
+      }
+      .cover-meta {
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        bottom: 12px;
+        color: #fff;
+      }
+      .cover-meta p {
+        margin: 0;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        opacity: 0.85;
+      }
+      .body {
+        padding: 16px;
+        display: grid;
+        gap: 10px;
+      }
+      .bar {
+        height: 6px;
+        border-radius: 999px;
+        background: var(--surface-2);
+        overflow: hidden;
+      }
+      .bar span {
+        display: block;
+        height: 100%;
+        background: var(--primary-2);
+      }
+      .chips {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding: 2px 0 6px;
+        scrollbar-width: none;
+      }
+      .chips::-webkit-scrollbar {
+        display: none;
+      }
+      .chip {
+        flex: 0 0 auto;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--muted);
+        padding: 7px 14px;
+        font-size: 13.5px;
+        font-weight: 500;
+      }
+      .chip[aria-pressed="true"] {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: #fff;
+      }
+      .btn {
+        border: 0;
+        border-radius: 999px;
+        background: var(--primary);
+        color: #fff;
+        padding: 13px 22px;
+        font-weight: 700;
+        font-size: 15px;
+      }
+      .btn[disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .btn-ghost {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--text);
+      }
+      .btn-block {
+        width: 100%;
+      }
+      .input {
+        width: 100%;
+        height: 46px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text);
+        padding: 0 16px;
+        font-size: 15px;
+      }
+      textarea.input,
+      .input.square {
+        border-radius: 14px;
+      }
+      textarea.input {
+        height: auto;
+        padding: 12px 16px;
+      }
+      .nav {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-top: 1px solid var(--border);
+        background: color-mix(in srgb, var(--surface) 85%, transparent);
+        backdrop-filter: blur(16px);
+        padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+      }
+      .nav ul {
+        max-width: 460px;
+        margin: 0 auto;
+        list-style: none;
+        display: flex;
+        padding: 0;
+      }
+      .nav li {
+        flex: 1;
+      }
+      .nav button {
+        width: 100%;
+        background: none;
+        border: 0;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 600;
+        display: grid;
+        gap: 3px;
+        justify-items: center;
+        padding: 4px 0;
+      }
+      .nav button[aria-current="page"] {
+        color: var(--primary-2);
+      }
+      .nav svg {
+        width: 21px;
+        height: 21px;
+      }
+      .grid3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+      .stat {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 12px;
+        text-align: center;
+      }
+      .stat b {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 18px;
+        display: block;
+      }
+      .stat span {
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .sheet-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        display: none;
+        z-index: 50;
+      }
+      .sheet-backdrop.open {
+        display: block;
+      }
+      .sheet {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        max-width: 460px;
+        margin: 0 auto;
+        background: var(--surface);
+        border-radius: 28px 28px 0 0;
+        border: 1px solid var(--border);
+        padding: 20px 16px calc(24px + env(safe-area-inset-bottom, 0px));
+        transform: translateY(100%);
+        transition: transform 0.28s ease;
+      }
+      .sheet-backdrop.open .sheet {
+        transform: translateY(0);
+      }
+      .ticket {
+        background: #fff;
+        color: #1a0f2e;
+        border-radius: 28px;
+        padding: 22px 18px;
+        text-align: center;
+        box-shadow: 0 30px 60px -25px rgba(0, 0, 0, 0.8);
+      }
+      .perf {
+        border-top: 2px dashed rgba(0, 0, 0, 0.18);
+        margin: 18px -18px;
+        position: relative;
+      }
+      .code {
+        font-family: ui-monospace, "SFMono-Regular", monospace;
+        letter-spacing: 0.18em;
+        font-weight: 700;
+      }
+      .empty {
+        border: 1px dashed var(--border);
+        border-radius: 28px;
+        padding: 42px 22px;
+        text-align: center;
+        color: var(--muted);
+      }
+      .skeleton {
+        background: linear-gradient(90deg, var(--surface), var(--surface-2), var(--surface));
+        background-size: 200% 100%;
+        animation: shimmer 1.2s infinite linear;
+        border-radius: 16px;
+      }
+      @keyframes shimmer {
+        to {
+          background-position: -200% 0;
+        }
+      }
+      .note {
+        border-radius: 18px;
+        padding: 12px 14px;
+        font-size: 12.5px;
+        line-height: 1.55;
+        background: rgba(47, 123, 255, 0.12);
+        border: 1px solid rgba(47, 123, 255, 0.32);
+      }
+      .note.ok {
+        background: rgba(34, 201, 138, 0.12);
+        border-color: rgba(34, 201, 138, 0.34);
+      }
+      .note.bad {
+        background: rgba(255, 92, 92, 0.12);
+        border-color: rgba(255, 92, 92, 0.34);
+      }
+      .list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 10px;
+      }
+      .item {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        padding: 12px;
+      }
+      .avatar {
+        width: 46px;
+        height: 46px;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        background: rgba(124, 58, 237, 0.18);
+        color: var(--primary-2);
+        flex: 0 0 auto;
+        font-weight: 700;
+      }
+      .truncate {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .field {
+        display: grid;
+        gap: 6px;
+        margin-bottom: 12px;
+      }
+      .field label {
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+      }
+      .qrbox {
+        display: inline-grid;
+        background: #fff;
+        padding: 10px;
+        border-radius: 14px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="banner" role="note">
+      <strong>Standalone demo file.</strong> This single HTML file is a visual + navigable prototype
+      of PartyPass. Account sign-in, Paystack payment confirmation, live camera QR scanning, and
+      saved data are <strong>demo placeholders</strong> here — they run for real only in the hosted
+      PartyPass app backed by Lovable Cloud. Data resets when you reload.
+    </div>
+
+    <div class="phone" id="app" aria-live="polite"></div>
+
+    <nav class="nav" aria-label="Main navigation">
+      <ul id="nav"></ul>
+    </nav>
+
+    <div class="sheet-backdrop" id="backdrop">
+      <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div>
+    </div>
+
+    <script>
+      /* ---------------------------------------------------------------
+       * PartyPass standalone prototype — no build step, no network calls.
+       * All state is in memory; reloading restores the demo seed.
+       * ------------------------------------------------------------- */
+      const IC = {
+        compass:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg>',
+        search:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
+        ticket:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2 2 2 0 0 0 0 6 2 2 0 0 1-2 2H5a2 2 0 0 1-2-2 2 2 0 0 0 0-6z"/></svg>',
+        heart:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.6-7-9.4A4 4 0 0 1 12 7a4 4 0 0 1 7 3.6C19 15.4 12 20 12 20z"/></svg>',
+        user:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>',
+        back:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 19l-7-7 7-7"/></svg>',
+        sun:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg>',
+        moon:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/></svg>',
+        check:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m4 12.5 5 5L20 6.5"/></svg>',
+        cam:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8h4l2-2h6l2 2h4v11H3z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+      };
+
+      const IMG = (id) => `https://images.unsplash.com/photo-${id}?w=900&q=80`;
+
+      const day = (n) => new Date(Date.now() + n * 86400000);
+
+      let events = [
+        { id: "e1", title: "Afro Nation Detty Rave", cat: "Afrobeats", venue: "Aviation Social Centre", city: "Accra", price: 150, cap: 800, sold: 412, at: day(6), img: IMG("1516450360452-9312f5e86fc7"), desc: "The biggest Afrobeats night in Accra. Live sets from Ghana's top DJs, confetti cannons and an all-night dancefloor.", live: true },
+        { id: "e2", title: "Amapiano Sundays", cat: "Amapiano", venue: "Sandbox Beach Club", city: "Accra", price: 80, cap: 350, sold: 198, at: day(3), img: IMG("1533174072545-7a4b6ad7a6c3"), desc: "Log drums, yanos and rooftop views over Osu. Sunday reset with resident selectors.", live: true },
+        { id: "e3", title: "Kumasi Hiplife Reunion", cat: "Hiplife", venue: "Golden Bean Hotel", city: "Kumasi", price: 100, cap: 500, sold: 121, at: day(12), img: IMG("1470229722913-7ea0d1a1f4b9"), desc: "Classic hiplife anthems all night. Old school dress code encouraged.", live: true },
+        { id: "e4", title: "Labadi Beach Bonfire", cat: "Beach Party", venue: "Labadi Pleasure Beach", city: "Accra", price: 60, cap: 600, sold: 305, at: day(9), img: IMG("1533105079780-92b9be482077"), desc: "Bonfire, drums, live band and grilled tilapia on the sand.", live: true },
+        { id: "e5", title: "Highlife & Palm Wine Night", cat: "Highlife", venue: "Alliance Française", city: "Accra", price: 120, cap: 180, sold: 176, at: day(15), img: IMG("1493225457124-a3eb161ffa5f"), desc: "An intimate seated evening of live highlife guitar and palm wine.", live: true },
+        { id: "e6", title: "Tamale Afro House Festival", cat: "Afro House", venue: "Tamale Stadium Grounds", city: "Tamale", price: 200, cap: 2000, sold: 356, at: day(28), img: IMG("1492684223066-81342ee5ff30"), desc: "Sunset to sunrise afro house on the northern plains.", live: true },
+      ];
+
+      const CATS = ["All", "Afrobeats", "Amapiano", "Hiplife", "Highlife", "Afro House", "Beach Party"];
+      const CITIES = ["All Ghana", "Accra", "Kumasi", "Takoradi", "Tamale", "Cape Coast"];
+
+      const state = {
+        screen: "discover",
+        cat: "All",
+        city: "All Ghana",
+        term: "",
+        eventId: null,
+        ticketId: null,
+        qty: 1,
+        favorites: new Set(["e2"]),
+        tickets: [],
+        orders: [],
+        loading: false,
+        scan: null,
+        me: { name: "Awuku Godfred", email: "you@partypass.demo", phone: "+233 20 000 0000", host: true },
+      };
+
+      const ghs = (n) =>
+        new Intl.NumberFormat("en-GH", { style: "currency", currency: "GHS", maximumFractionDigits: n % 1 ? 2 : 0 }).format(n);
+      const dstr = (d) => d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+      const tstr = (d) => d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+      const left = (e) => Math.max(0, e.cap - e.sold);
+      const pct = (e) => Math.min(100, Math.round((e.sold / e.cap) * 100));
+      const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+      const el = (id) => document.getElementById(id);
+
+      /* Placeholder QR: a deterministic pattern from the ticket code. It looks
+         like a QR and is unique per ticket, but it is NOT a scannable code —
+         the hosted app generates real QR codes. */
+      function qrSvg(code, size = 232) {
+        const n = 25;
+        let h = 2166136261;
+        for (const ch of code) {
+          h ^= ch.charCodeAt(0);
+          h = Math.imul(h, 16777619);
+        }
+        const rnd = () => ((h = Math.imul(h ^ (h >>> 15), 2246822507) >>> 0) % 1000) / 1000;
+        const cell = size / n;
+        let rects = "";
+        const finder = (x, y) => {
+          for (let i = 0; i < 7; i++)
+            for (let j = 0; j < 7; j++) {
+              const edge = i === 0 || j === 0 || i === 6 || j === 6;
+              const core = i > 1 && i < 5 && j > 1 && j < 5;
+              if (edge || core)
+                rects += `<rect x="${(x + i) * cell}" y="${(y + j) * cell}" width="${cell}" height="${cell}"/>`;
+            }
+        };
+        const inFinder = (i, j) =>
+          (i < 8 && j < 8) || (i > n - 9 && j < 8) || (i < 8 && j > n - 9);
+        for (let i = 0; i < n; i++)
+          for (let j = 0; j < n; j++)
+            if (!inFinder(i, j) && rnd() > 0.52)
+              rects += `<rect x="${i * cell}" y="${j * cell}" width="${cell}" height="${cell}"/>`;
+        finder(0, 0);
+        finder(n - 7, 0);
+        finder(0, n - 7);
+        return `<svg class="qrbox" role="img" aria-label="Placeholder QR code for ticket ${esc(code)}" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><g fill="#1a0b2e">${rects}</g></svg>`;
+      }
+
+      /* ---------------- navigation ---------------- */
+      const NAV = [
+        ["discover", "Discover", IC.compass],
+        ["search", "Search", IC.search],
+        ["tickets", "Tickets", IC.ticket],
+        ["saved", "Saved", IC.heart],
+        ["profile", "Profile", IC.user],
+      ];
+
+      function go(screen, extra = {}) {
+        Object.assign(state, extra, { screen });
+        if (["discover", "search", "saved", "tickets"].includes(screen)) {
+          state.loading = true;
+          render();
+          setTimeout(() => {
+            state.loading = false;
+            render();
+          }, 420);
+          return;
+        }
+        render();
+      }
+
+      function renderNav() {
+        el("nav").innerHTML = NAV.map(
+          ([id, label, icon]) =>
+            `<li><button data-nav="${id}" ${state.screen === id ? 'aria-current="page"' : ""}>${icon}<span>${label}</span></button></li>`,
+        ).join("");
+      }
+
+      /* ---------------- screens ---------------- */
+      function cardHtml(e) {
+        const fav = state.favorites.has(e.id);
+        const l = left(e);
+        const badge =
+          l === 0
+            ? '<span class="pill pill-danger" style="position:absolute;right:12px;top:12px">Sold out</span>'
+            : l <= e.cap * 0.1
+              ? `<span class="pill pill-warn" style="position:absolute;right:12px;top:12px">${l} left</span>`
+              : "";
+        return `<article class="card">
+          <button style="all:unset;display:block;cursor:pointer" data-event="${e.id}" aria-label="${esc(e.title)} at ${esc(e.venue)}, ${esc(e.city)}">
+            <div class="cover"><img src="${e.img}" alt="" loading="lazy"/><div class="scrim"></div>
+              <span class="pill pill-primary" style="position:absolute;left:12px;top:12px">${esc(e.cat)}</span>${badge}
+              <div class="cover-meta"><p>${dstr(e.at)} · ${tstr(e.at)}</p><h3 class="truncate" style="font-size:18px">${esc(e.title)}</h3></div>
+            </div>
+            <div class="body">
+              <p class="muted small truncate" style="margin:0">${esc(e.venue)}, ${esc(e.city)}</p>
+              <div class="row between"><b class="display" style="font-size:18px">${e.price ? ghs(e.price) : "Free"}</b><span class="muted small">${pct(e)}% sold</span></div>
+              <div class="bar" role="progressbar" aria-valuenow="${pct(e)}" aria-valuemin="0" aria-valuemax="100" aria-label="Tickets sold"><span style="width:${pct(e)}%"></span></div>
+            </div>
+          </button>
+          <button class="icon-btn" data-fav="${e.id}" aria-pressed="${fav}" aria-label="${fav ? "Remove from saved" : "Save event"}" style="position:absolute;right:12px;top:60px;background:rgba(0,0,0,.5);border-color:transparent;color:#fff">
+            <svg viewBox="0 0 24 24" fill="${fav ? "#ff5c5c" : "none"}" stroke="${fav ? "#ff5c5c" : "currentColor"}" stroke-width="1.8" style="width:19px;height:19px"><path d="M12 20s-7-4.6-7-9.4A4 4 0 0 1 12 7a4 4 0 0 1 7 3.6C19 15.4 12 20 12 20z"/></svg>
+          </button>
+        </article>`;
+      }
+
+      const skeletons = (n) =>
+        `<span class="sr-only">Loading</span>` +
+        Array.from({ length: n })
+          .map(
+            () =>
+              `<div class="card"><div class="skeleton" style="aspect-ratio:16/10;border-radius:0"></div><div class="body"><div class="skeleton" style="height:14px;width:35%"></div><div class="skeleton" style="height:18px;width:75%"></div><div class="skeleton" style="height:14px;width:50%"></div></div></div>`,
+          )
+          .join("");
+
+      function filtered() {
+        return events.filter(
+          (e) =>
+            e.live &&
+            (state.cat === "All" || e.cat === state.cat) &&
+            (state.city === "All Ghana" || e.city === state.city) &&
+            (!state.term ||
+              (e.title + e.venue + e.city).toLowerCase().includes(state.term.toLowerCase())),
+        );
+      }
+
+      function screenDiscover() {
+        const list = filtered();
+        const feat = list[0];
+        return `
+        <div class="row between" style="margin-bottom:16px">
+          <div><p class="eyebrow">PartyPass</p><h1 style="font-size:24px">Tonight in Ghana</h1></div>
+          <div class="row" style="gap:8px">
+            <button class="icon-btn" data-theme aria-label="Toggle dark mode">${document.documentElement.classList.contains("dark") ? IC.sun : IC.moon}</button>
+            <button class="icon-btn" data-nav="search" aria-label="Search events">${IC.search}</button>
+          </div>
+        </div>
+        <div class="note" style="margin-bottom:14px"><strong>Install:</strong> in the real app this offers "Add to home screen". In this file it's a static note.</div>
+        ${feat ? `<button style="all:unset;cursor:pointer;display:block;width:100%" data-event="${feat.id}"><div class="hero" style="margin-bottom:16px"><p class="eyebrow" style="color:rgba(255,255,255,.7)">Featured this week</p><h2 style="font-size:20px;margin-top:4px">${esc(feat.title)}</h2><p class="small" style="opacity:.85;margin:4px 0 0">${esc(feat.venue)} · ${esc(feat.city)}</p></div></button>` : ""}
+        <div class="chips" role="group" aria-label="Filter by category">${CATS.map((c) => `<button class="chip" data-cat="${c}" aria-pressed="${state.cat === c}">${c}</button>`).join("")}</div>
+        ${state.loading ? skeletons(2) : list.length ? list.map(cardHtml).join("") : `<div class="empty"><h2 style="font-size:16px;color:var(--text)">No events in this category yet</h2><p class="small">Try another vibe — new parties drop every week.</p></div>`}`;
+      }
+
+      function screenSearch() {
+        const list = filtered();
+        return `<h1 style="font-size:24px;margin-bottom:4px">Search</h1><p class="muted small" style="margin:0 0 14px">Find events by name, venue or city.</p>
+        <input class="input" id="term" value="${esc(state.term)}" placeholder="Amapiano, Labadi Beach, Kumasi…" aria-label="Search events" style="margin-bottom:12px"/>
+        <div class="chips" role="group" aria-label="Filter by city">${CITIES.map((c) => `<button class="chip" data-city="${c}" aria-pressed="${state.city === c}">${c}</button>`).join("")}</div>
+        ${state.loading ? skeletons(2) : list.length ? list.map(cardHtml).join("") : `<div class="empty"><h2 style="font-size:16px;color:var(--text)">Nothing matched that</h2><p class="small">Try a shorter word or a different city.</p></div>`}`;
+      }
+
+      function screenEvent() {
+        const e = events.find((x) => x.id === state.eventId);
+        if (!e) return `<div class="empty">Event not found.</div>`;
+        const l = left(e);
+        const fav = state.favorites.has(e.id);
+        return `<div style="margin:-16px -16px 0;position:relative">
+          <div style="height:250px"><img src="${e.img}" alt="" style="width:100%;height:100%;object-fit:cover"/></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,var(--bg),transparent 65%)"></div>
+          <button class="icon-btn" data-nav="discover" aria-label="Back to events" style="position:absolute;left:16px;top:16px;background:rgba(0,0,0,.5);border-color:transparent;color:#fff">${IC.back}</button>
+          <button class="icon-btn" data-fav="${e.id}" aria-pressed="${fav}" aria-label="${fav ? "Remove from saved" : "Save event"}" style="position:absolute;right:16px;top:16px;background:rgba(0,0,0,.5);border-color:transparent;color:#fff"><svg viewBox="0 0 24 24" fill="${fav ? "#ff5c5c" : "none"}" stroke="${fav ? "#ff5c5c" : "currentColor"}" stroke-width="1.8" style="width:19px;height:19px"><path d="M12 20s-7-4.6-7-9.4A4 4 0 0 1 12 7a4 4 0 0 1 7 3.6C19 15.4 12 20 12 20z"/></svg></button>
+        </div>
+        <span class="pill" style="background:rgba(124,58,237,.2);color:var(--primary-2)">${esc(e.cat)}</span>
+        <h1 style="font-size:24px;margin:10px 0 14px">${esc(e.title)}</h1>
+        <div class="card" style="padding:16px;border-radius:24px;margin-bottom:14px">
+          <dl style="margin:0;display:grid;gap:12px">
+            ${[["Date", dstr(e.at)], ["Time", tstr(e.at)], ["Venue", `${e.venue}, ${e.city}`], ["Capacity", `${e.sold} of ${e.cap} sold (${pct(e)}%)`]]
+              .map(([k, v]) => `<div><dt class="muted small">${k}</dt><dd style="margin:2px 0 0;font-weight:600">${esc(v)}</dd></div>`)
+              .join("")}
+          </dl>
+        </div>
+        <h2 style="font-size:16px;margin-bottom:6px">About this event</h2>
+        <p class="muted small" style="line-height:1.6;margin-top:0">${esc(e.desc)}</p>
+        <div class="note" style="margin-bottom:18px"><strong>Demo placeholder:</strong> real checkout charges cards and mobile money through Paystack in cedis, and tickets are only issued after payment is confirmed.</div>
+        <div class="row between" style="gap:12px">
+          <div><p class="muted small" style="margin:0">${l === 0 ? "Sold out" : l + " tickets left"}</p><b class="display" style="font-size:22px">${e.price ? ghs(e.price) : "Free"}</b></div>
+          <button class="btn" data-checkout="${e.id}" ${l === 0 ? "disabled" : ""}>${l === 0 ? "Sold out" : "Get tickets"}</button>
+        </div>`;
+      }
+
+      function screenTickets() {
+        if (state.loading) return `<h1 style="font-size:24px">My Tickets</h1>${skeletons(2)}`;
+        if (!state.tickets.length)
+          return `<h1 style="font-size:24px;margin-bottom:14px">My Tickets</h1><div class="empty"><h2 style="font-size:16px;color:var(--text)">No tickets yet</h2><p class="small">Buy a ticket in the demo checkout and it appears here with a pass.</p><button class="btn" data-nav="discover" style="margin-top:14px">Discover events</button></div>`;
+        return `<h1 style="font-size:24px;margin-bottom:4px">My Tickets</h1><p class="muted small" style="margin:0 0 14px">Tap a ticket to open its full-screen pass.</p>
+        <ul class="list">${state.tickets
+          .map((t) => {
+            const e = events.find((x) => x.id === t.eventId);
+            return `<li><button class="item" data-ticket="${t.id}" style="width:100%;text-align:left;border-radius:22px">
+              <span class="avatar">${t.used ? IC.check : IC.ticket}</span>
+              <span style="flex:1;min-width:0"><b class="truncate" style="display:block">${esc(e.title)}</b><span class="muted small truncate" style="display:block">${dstr(e.at)} · ${esc(e.venue)}</span><span class="small code" style="color:var(--muted)">${t.code}</span></span>
+              <span class="pill ${t.used ? "" : "pill-success"}" style="${t.used ? "background:var(--surface-2);color:var(--muted)" : ""}">${t.used ? "Used" : "Valid"}</span>
+            </button></li>`;
+          })
+          .join("")}</ul>`;
+      }
+
+      function screenPass() {
+        const t = state.tickets.find((x) => x.id === state.ticketId);
+        if (!t) return `<div class="empty">Ticket not found.</div>`;
+        const e = events.find((x) => x.id === t.eventId);
+        return `<div style="margin:-16px -16px -104px;min-height:100vh;padding:16px 16px 40px;background:linear-gradient(145deg,#5b21b6,#4c1d95 45%,#1d4ed8)">
+          <button class="icon-btn" data-nav="tickets" aria-label="Back to my tickets" style="background:rgba(0,0,0,.3);border-color:transparent;color:#fff">${IC.back}</button>
+          <div style="max-width:340px;margin:24px auto 0">
+            <div class="ticket">
+              <p class="small" style="letter-spacing:.14em;text-transform:uppercase;color:#6b5e85;margin:0 0 4px">PartyPass entry</p>
+              <h1 style="font-size:19px">${esc(e.title)}</h1>
+              <p class="small" style="color:#6b5e85;margin:4px 0 14px">${esc(e.venue)}, ${esc(e.city)}</p>
+              ${qrSvg(t.code)}
+              <p class="code" style="font-size:18px;margin:10px 0 0">${t.code}</p>
+              <div class="perf"></div>
+              <dl style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0">
+                ${[["Date", dstr(e.at)], ["Time", tstr(e.at)], ["Holder", state.me.name.split(" ")[0]]]
+                  .map(([k, v]) => `<div><dt class="small" style="color:#6b5e85;text-transform:uppercase;font-size:10px">${k}</dt><dd style="margin:2px 0 0;font-weight:700;font-size:13.5px">${esc(v)}</dd></div>`)
+                  .join("")}
+              </dl>
+            </div>
+            <p style="text-align:center;margin-top:16px"><span class="pill" style="background:${t.used ? "rgba(255,255,255,.18)" : "var(--success)"};color:${t.used ? "#fff" : "#04291b"};padding:8px 16px;font-size:13px">${t.used ? "Checked in" : "Valid — show this at the gate"}</span></p>
+            <p class="small" style="text-align:center;color:rgba(255,255,255,.72)">This QR is a visual placeholder in the standalone file. The hosted app renders a real scannable code.</p>
+          </div>
+        </div>`;
+      }
+
+      function screenSaved() {
+        const list = events.filter((e) => state.favorites.has(e.id));
+        if (state.loading) return `<h1 style="font-size:24px">Saved</h1>${skeletons(1)}`;
+        return `<h1 style="font-size:24px;margin-bottom:4px">Saved</h1><p class="muted small" style="margin:0 0 14px">Your shortlist of upcoming nights out.</p>
+        ${list.length ? list.map(cardHtml).join("") : `<div class="empty"><h2 style="font-size:16px;color:var(--text)">Nothing saved yet</h2><p class="small">Tap the heart on any event and it lands here.</p></div>`}`;
+      }
+
+      function screenOrders() {
+        return `<div class="row" style="margin-bottom:14px"><button class="icon-btn" data-nav="profile" aria-label="Back to profile">${IC.back}</button><h1 style="font-size:20px">Orders</h1></div>
+        ${
+          state.orders.length
+            ? `<ul class="list">${state.orders
+                .map((o) => {
+                  const e = events.find((x) => x.id === o.eventId);
+                  return `<li class="card" style="padding:16px;border-radius:22px"><div class="row between"><b class="truncate">${esc(e.title)}</b><span class="pill pill-success">paid</span></div>
+                <dl class="grid3" style="margin:12px 0 0;border-top:1px solid var(--border);padding-top:12px">
+                  <div><dt class="muted small">Tickets</dt><dd style="margin:0;font-weight:700">${o.qty}</dd></div>
+                  <div><dt class="muted small">Total</dt><dd style="margin:0;font-weight:700">${ghs(o.total)}</dd></div>
+                  <div style="min-width:0"><dt class="muted small">Reference</dt><dd class="truncate code small" style="margin:0">${o.ref}</dd></div>
+                </dl></li>`;
+                })
+                .join("")}</ul>`
+            : `<div class="empty"><h2 style="font-size:16px;color:var(--text)">No orders yet</h2><p class="small">Receipts show up after your first purchase.</p></div>`
+        }`;
+      }
+
+      function screenProfile() {
+        const dark = document.documentElement.classList.contains("dark");
+        return `<h1 style="font-size:24px;margin-bottom:14px">Profile</h1>
+        <div class="item" style="border-radius:26px;padding:16px;margin-bottom:14px"><span class="avatar" style="background:var(--primary);color:#fff">AG</span><span style="min-width:0"><b class="truncate" style="display:block">${esc(state.me.name)}</b><span class="muted small">${esc(state.me.email)}</span></span></div>
+        <div class="card" style="padding:16px;border-radius:24px;margin-bottom:14px">
+          <h2 style="font-size:15px;margin-bottom:12px">Your details</h2>
+          <div class="field"><label for="pname">Full name</label><input class="input square" id="pname" value="${esc(state.me.name)}"/></div>
+          <div class="field"><label for="pphone">Phone (mobile money)</label><input class="input square" id="pphone" value="${esc(state.me.phone)}"/></div>
+          <button class="btn btn-block" data-save-profile>Save changes</button>
+        </div>
+        <div class="card" style="padding:16px;border-radius:24px;margin-bottom:14px">
+          <div class="row between"><span><b style="font-size:14.5px">Host mode</b><br><span class="muted small">Create events, sell tickets, scan guests in.</span></span>
+          <button class="btn ${state.me.host ? "" : "btn-ghost"}" data-toggle-host style="padding:8px 16px;font-size:13px">${state.me.host ? "On" : "Off"}</button></div>
+          ${state.me.host ? `<div style="display:grid;gap:8px;margin-top:14px"><button class="btn btn-ghost btn-block" data-nav="host">Host dashboard</button><button class="btn btn-ghost btn-block" data-nav="scan">Scan tickets</button></div>` : ""}
+        </div>
+        <div class="card" style="padding:16px;border-radius:24px;margin-bottom:14px;display:grid;gap:10px">
+          <button class="btn btn-ghost btn-block" data-nav="orders">Order history</button>
+          <button class="btn btn-ghost btn-block" data-theme>${dark ? "Switch to light mode" : "Switch to dark mode"}</button>
+        </div>
+        <div class="note">Sign in and sign out are <strong>demo placeholders</strong> in this file. The hosted app uses email/password and Google sign-in.</div>`;
+      }
+
+      function screenHost() {
+        const mine = events;
+        const gross = mine.reduce((s, e) => s + e.sold * e.price, 0);
+        return `<div class="row between" style="margin-bottom:14px"><div class="row"><button class="icon-btn" data-nav="profile" aria-label="Back to profile">${IC.back}</button><div><h1 style="font-size:20px">Host dashboard</h1><span class="muted small">Your events, sales and earnings.</span></div></div><button class="btn" data-new-event style="padding:9px 16px;font-size:13px">New</button></div>
+        <div class="grid3" style="margin-bottom:14px">
+          <div class="stat"><b>${mine.length}</b><span>Events</span></div>
+          <div class="stat"><b>${mine.reduce((s, e) => s + e.sold, 0)}</b><span>Tickets sold</span></div>
+          <div class="stat"><b>${ghs(gross)}</b><span>Gross</span></div>
+        </div>
+        <div class="note ok" style="margin-bottom:14px"><span class="eyebrow" style="color:var(--success)">Estimated payout</span><div class="display" style="font-size:24px;font-weight:700;color:var(--text)">${ghs(gross * 0.95)}</div>After a 5% platform fee. Paystack settles to your bank or mobile money account.</div>
+        <button class="btn btn-ghost btn-block" data-nav="scan" style="margin-bottom:16px">Open ticket scanner</button>
+        <ul class="list">${mine
+          .map(
+            (e) => `<li class="card" style="padding:16px;border-radius:22px">
+            <div class="row between"><span style="min-width:0"><b class="truncate" style="display:block">${esc(e.title)}</b><span class="muted small">${dstr(e.at)} · ${tstr(e.at)}</span></span><span class="pill ${e.live ? "pill-success" : ""}" style="${e.live ? "" : "background:var(--surface-2);color:var(--muted)"}">${e.live ? "Live" : "Draft"}</span></div>
+            <p class="muted small" style="margin:8px 0 12px">${e.sold}/${e.cap} sold (${pct(e)}%) · ${ghs(e.sold * e.price)}</p>
+            <div class="row" style="gap:8px"><button class="btn btn-ghost" data-edit="${e.id}" style="flex:1;padding:9px;font-size:13px">Edit</button><button class="btn btn-ghost" data-holders="${e.id}" style="flex:1;padding:9px;font-size:13px">Holders</button></div>
+          </li>`,
+          )
+          .join("")}</ul>`;
+      }
+
+      function screenEdit() {
+        const e = events.find((x) => x.id === state.eventId) || { title: "", venue: "", city: "Accra", cat: "Afrobeats", price: 100, cap: 200, desc: "", live: true };
+        const isNew = !e.id;
+        return `<div class="row" style="margin-bottom:14px"><button class="icon-btn" data-nav="host" aria-label="Back to host dashboard">${IC.back}</button><h1 style="font-size:20px">${isNew ? "Create event" : "Edit event"}</h1></div>
+        <form id="eventForm">
+          <div class="field"><label for="f_title">Event title</label><input class="input square" id="f_title" required value="${esc(e.title)}"/></div>
+          <div class="field"><label for="f_desc">Description</label><textarea class="input" id="f_desc" rows="3">${esc(e.desc || "")}</textarea></div>
+          <div class="field"><label for="f_venue">Venue</label><input class="input square" id="f_venue" required value="${esc(e.venue)}"/></div>
+          <div class="row" style="gap:10px;align-items:flex-end">
+            <div class="field" style="flex:1"><label for="f_city">City</label><select class="input square" id="f_city">${CITIES.slice(1).map((c) => `<option ${c === e.city ? "selected" : ""}>${c}</option>`).join("")}</select></div>
+            <div class="field" style="flex:1"><label for="f_cat">Category</label><select class="input square" id="f_cat">${CATS.slice(1).map((c) => `<option ${c === e.cat ? "selected" : ""}>${c}</option>`).join("")}</select></div>
+          </div>
+          <div class="row" style="gap:10px;align-items:flex-end">
+            <div class="field" style="flex:1"><label for="f_price">Price (GHS)</label><input class="input square" id="f_price" type="number" min="0" value="${e.price}"/></div>
+            <div class="field" style="flex:1"><label for="f_cap">Capacity</label><input class="input square" id="f_cap" type="number" min="1" value="${e.cap}"/></div>
+          </div>
+          <button class="btn btn-block" type="submit">${isNew ? "Publish event" : "Save changes"}</button>
+          ${isNew ? "" : `<button class="btn btn-ghost btn-block" type="button" data-delete="${e.id}" style="margin-top:10px;color:var(--danger)">Delete event</button>`}
+        </form>`;
+      }
+
+      function screenHolders() {
+        const e = events.find((x) => x.id === state.eventId);
+        const rows = state.tickets.filter((t) => t.eventId === e.id);
+        const demo = Array.from({ length: Math.min(6, e.sold) }, (_, i) => ({
+          code: "PP-DEMO" + String(1000 + i * 137),
+          name: ["Ama Boateng", "Kojo Antwi", "Nana Yaa", "Selorm Doe", "Yaw Owusu", "Efua Mensah"][i],
+          used: i % 3 === 0,
+        }));
+        const all = [...rows.map((t) => ({ code: t.code, name: state.me.name, used: t.used })), ...demo];
+        const inCount = all.filter((r) => r.used).length;
+        return `<div class="row" style="margin-bottom:14px"><button class="icon-btn" data-nav="host" aria-label="Back to host dashboard">${IC.back}</button><div style="min-width:0"><h1 class="truncate" style="font-size:19px">${esc(e.title)}</h1><span class="muted small">${inCount} of ${all.length} checked in · ${ghs(all.length * e.price)} shown</span></div></div>
+        <input class="input" placeholder="Search name or ticket code" aria-label="Search ticket holders" id="holderTerm" style="margin-bottom:12px"/>
+        <ul class="list" id="holderList">${all
+          .map(
+            (r) => `<li class="item" data-h="${esc((r.name + r.code).toLowerCase())}"><span class="avatar" style="${r.used ? "background:rgba(34,201,138,.16);color:var(--success)" : ""}">${r.used ? IC.check : IC.user}</span><span style="flex:1;min-width:0"><b class="truncate" style="display:block;font-size:14px">${esc(r.name)}</b><span class="code small muted">${r.code}</span></span><span class="small muted">${r.used ? "Checked in" : "Not in yet"}</span></li>`,
+          )
+          .join("")}</ul>`;
+      }
+
+      function screenScan() {
+        const r = state.scan;
+        return `<div class="row" style="margin-bottom:14px"><button class="icon-btn" data-nav="host" aria-label="Back to host dashboard">${IC.back}</button><div><h1 style="font-size:20px">Ticket scanner</h1><span class="muted small">Each ticket can only be used once.</span></div></div>
+        <div style="aspect-ratio:1;border-radius:26px;border:1px solid var(--border);background:#000;display:grid;place-items:center;margin-bottom:14px;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:36px;border:2px solid rgba(255,255,255,.7);border-radius:18px"></div>
+          <div style="text-align:center;color:rgba(255,255,255,.7);padding:0 24px">${IC.cam}<p class="small">Live camera scanning is a placeholder in this file. Use manual entry below.</p></div>
+        </div>
+        <form id="scanForm" style="margin-bottom:14px">
+          <label for="scanCode" style="font-size:13px;font-weight:600">Manual entry</label>
+          <div class="row" style="gap:8px;margin-top:6px"><input class="input code" id="scanCode" placeholder="PP-XXXXXXXX" style="text-transform:uppercase"/><button class="btn" type="submit">Check</button></div>
+          ${state.tickets[0] ? `<p class="small muted" style="margin:8px 0 0">Try your own demo ticket: <button type="button" class="code" data-fill="${state.tickets[0].code}" style="background:none;border:0;color:var(--primary-2);padding:0;text-decoration:underline">${state.tickets[0].code}</button></p>` : ""}
+        </form>
+        ${
+          r
+            ? `<div class="note ${r.ok ? "ok" : "bad"}" role="status"><b style="color:var(--text)">${esc(r.title)}</b><br>${esc(r.body)}${r.name ? `<br><b style="color:var(--text)">${esc(r.name)}</b>` : ""}</div>`
+            : ""
+        }`;
+      }
+
+      const SCREENS = {
+        discover: screenDiscover,
+        search: screenSearch,
+        event: screenEvent,
+        tickets: screenTickets,
+        pass: screenPass,
+        saved: screenSaved,
+        orders: screenOrders,
+        profile: screenProfile,
+        host: screenHost,
+        edit: screenEdit,
+        holders: screenHolders,
+        scan: screenScan,
+      };
+
+      function render() {
+        el("app").innerHTML = (SCREENS[state.screen] || screenDiscover)();
+        renderNav();
+        window.scrollTo({ top: 0 });
+      }
+
+      /* ---------------- checkout sheet ---------------- */
+      function openCheckout(id) {
+        state.eventId = id;
+        state.qty = 1;
+        drawSheet();
+        el("backdrop").classList.add("open");
+      }
+      function closeSheet() {
+        el("backdrop").classList.remove("open");
+      }
+      function drawSheet() {
+        const e = events.find((x) => x.id === state.eventId);
+        const total = e.price * state.qty;
+        el("sheet").innerHTML = `<h2 id="sheetTitle" style="font-size:19px">Checkout</h2><p class="muted small" style="margin:4px 0 16px">${esc(e.title)}</p>
+        <div class="item" style="border-radius:18px;margin-bottom:16px"><b style="flex:1;font-size:14.5px">Tickets</b>
+          <button class="icon-btn" data-qty="-1" aria-label="Decrease quantity" style="width:36px;height:36px">−</button>
+          <b style="width:24px;text-align:center" aria-live="polite">${state.qty}</b>
+          <button class="icon-btn" data-qty="1" aria-label="Increase quantity" style="width:36px;height:36px">+</button>
+        </div>
+        <div class="small" style="display:grid;gap:6px;margin-bottom:16px">
+          <div class="row between muted"><span>${state.qty} × ${ghs(e.price)}</span><span>${ghs(total)}</span></div>
+          <div class="row between muted"><span>Service fee</span><span>Included</span></div>
+          <div class="row between" style="border-top:1px solid var(--border);padding-top:8px;font-size:15px;font-weight:700"><span>Total</span><span>${ghs(total)}</span></div>
+        </div>
+        <div class="note ok" style="margin-bottom:16px"><strong>Paystack placeholder.</strong> No money moves in this file. Confirming issues demo tickets instantly.</div>
+        <button class="btn btn-block" data-pay>Pay ${ghs(total)}</button>
+        <button class="btn btn-ghost btn-block" data-close style="margin-top:10px">Cancel</button>`;
+      }
+
+      function pay() {
+        const e = events.find((x) => x.id === state.eventId);
+        const btn = el("sheet").querySelector("[data-pay]");
+        btn.disabled = true;
+        btn.textContent = "Confirming payment…";
+        setTimeout(() => {
+          const ref = "PSK-DEMO-" + Date.now().toString(36).toUpperCase();
+          for (let i = 0; i < state.qty; i++) {
+            state.tickets.unshift({
+              id: "t" + Math.random().toString(36).slice(2, 8),
+              eventId: e.id,
+              code: "PP-" + Math.random().toString(36).slice(2, 10).toUpperCase(),
+              used: false,
+            });
+          }
+          state.orders.unshift({ eventId: e.id, qty: state.qty, total: e.price * state.qty, ref });
+          e.sold = Math.min(e.cap, e.sold + state.qty);
+          closeSheet();
+          go("tickets");
+        }, 900);
+      }
+
+      /* ---------------- events ---------------- */
+      document.addEventListener("click", (ev) => {
+        const t = ev.target.closest("[data-nav],[data-event],[data-fav],[data-cat],[data-city],[data-checkout],[data-ticket],[data-theme],[data-qty],[data-pay],[data-close],[data-edit],[data-holders],[data-new-event],[data-delete],[data-toggle-host],[data-save-profile],[data-fill]");
+        if (!t) return;
+        const d = t.dataset;
+        if (d.nav) return go(d.nav);
+        if (d.event) return go("event", { eventId: d.event });
+        if (d.fav) {
+          state.favorites.has(d.fav) ? state.favorites.delete(d.fav) : state.favorites.add(d.fav);
+          return render();
+        }
+        if (d.cat) return go("discover", { cat: d.cat });
+        if (d.city) return go("search", { city: d.city });
+        if (d.checkout) return openCheckout(d.checkout);
+        if (d.ticket) return go("pass", { ticketId: d.ticket });
+        if (d.theme) {
+          document.documentElement.classList.toggle("dark");
+          document.documentElement.classList.toggle("light");
+          return render();
+        }
+        if (d.qty) {
+          state.qty = Math.max(1, Math.min(10, state.qty + Number(d.qty)));
+          return drawSheet();
+        }
+        if ("pay" in d) return pay();
+        if ("close" in d) return closeSheet();
+        if (d.edit) return go("edit", { eventId: d.edit });
+        if (d.holders) return go("holders", { eventId: d.holders });
+        if ("newEvent" in d) return go("edit", { eventId: null });
+        if (d.delete) {
+          events = events.filter((x) => x.id !== d.delete);
+          return go("host");
+        }
+        if ("toggleHost" in d) {
+          state.me.host = !state.me.host;
+          return render();
+        }
+        if ("saveProfile" in d) {
+          state.me.name = el("pname").value || state.me.name;
+          state.me.phone = el("pphone").value;
+          return render();
+        }
+        if (d.fill) {
+          el("scanCode").value = d.fill;
+          return;
+        }
+      });
+
+      el("backdrop").addEventListener("click", (ev) => {
+        if (ev.target === el("backdrop")) closeSheet();
+      });
+      document.addEventListener("keydown", (ev) => {
+        if (ev.key === "Escape") closeSheet();
+      });
+
+      document.addEventListener("input", (ev) => {
+        if (ev.target.id === "term") {
+          state.term = ev.target.value;
+          const list = filtered();
+          render();
+          el("term").focus();
+          el("term").setSelectionRange(state.term.length, state.term.length);
+          void list;
+        }
+        if (ev.target.id === "holderTerm") {
+          const needle = ev.target.value.trim().toLowerCase();
+          el("holderList")
+            .querySelectorAll("li")
+            .forEach((li) => {
+              li.style.display = li.dataset.h.includes(needle) ? "" : "none";
+            });
+        }
+      });
+
+      document.addEventListener("submit", (ev) => {
+        ev.preventDefault();
+        if (ev.target.id === "eventForm") {
+          const get = (id) => el(id).value;
+          const existing = events.find((x) => x.id === state.eventId);
+          const payload = {
+            title: get("f_title"),
+            desc: get("f_desc"),
+            venue: get("f_venue"),
+            city: get("f_city"),
+            cat: get("f_cat"),
+            price: Number(get("f_price")),
+            cap: Number(get("f_cap")),
+          };
+          if (existing) Object.assign(existing, payload);
+          else
+            events.unshift({
+              id: "e" + Math.random().toString(36).slice(2, 7),
+              sold: 0,
+              at: day(10),
+              img: IMG("1514525253161-7a46d19cd819"),
+              live: true,
+              ...payload,
+            });
+          return go("host");
+        }
+        if (ev.target.id === "scanForm") {
+          const code = el("scanCode").value.trim().toUpperCase();
+          const mine = state.tickets.find((t) => t.code === code);
+          if (!code) return;
+          if (!mine)
+            state.scan = { ok: false, title: "Not a PartyPass ticket", body: "No demo ticket matches that code." };
+          else if (mine.used)
+            state.scan = { ok: false, title: "Already used", body: "This ticket was scanned earlier.", name: state.me.name };
+          else {
+            mine.used = true;
+            state.scan = { ok: true, title: "Checked in", body: "Let them through — enjoy the party.", name: state.me.name };
+          }
+          return render();
+        }
+      });
+
+      render();
+    </script>
+  </body>
+</html>
